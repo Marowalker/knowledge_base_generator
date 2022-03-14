@@ -37,11 +37,13 @@ def main_knowledge_base():
     for prop in props:
         train_dict[prop].extend(val_dict[prop])
 
-    transe = TransEModel(model_name=constants.MODEL_NAMES.format('transe', constants.JOB_IDENTITY), batch_size=512,
+    transe = TransEModel(model_name=constants.MODEL_NAMES.format('transe', constants.JOB_IDENTITY), batch_size=1024,
                          epochs=constants.EPOCHS,
                          score=constants.SCORE)
     transe.build(train_dict, test_dict)
     transe.train(early_stopping=True, patience=constants.PATIENCE)
+    emb = transe.load_embedding(embedding_type='disease')
+    print(emb)
 
 
 def main_wordnet():

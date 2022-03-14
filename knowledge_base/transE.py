@@ -165,7 +165,7 @@ class TransEModel:
                     }
 
                     _, loss_train = sess.run([self.train_op, self.loss], feed_dict=feed_dict)
-                    if idx % 2500 == 0:
+                    if idx % 1000 == 0:
                         Log.log("Iter {}, Loss: {} ".format(idx, loss_train))
 
                 if early_stopping:
@@ -212,6 +212,19 @@ class TransEModel:
                 if not early_stopping:
                     saver.save(sess, self.model_name)
 
+    def load_embedding(self, embedding_type='chemical'):
+        saver = tf.compat.v1.train.Saver()
+        with tf.compat.v1.Session() as sess:
+            Log.log("Loading embedding type: {}".format(embedding_type))
+            saver.restore(sess, self.model_name)
+
+            if embedding_type == 'chemical':
+                embeddings = sess.run(self.chemical_embedding)
+            elif embedding_type == 'disease':
+                embeddings = sess.run(self.disease_embedding)
+            else:
+                embeddings = sess.run(self.relation_embedding)
+            return embeddings
 
 # class WordnetTransE:
 #     def __init__(self, model_path, batch_size, epochs, score):
