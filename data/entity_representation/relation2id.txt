@@ -1,0 +1,5 @@
+4
+inferred-association	0
+therapeutic	1
+marker/mechanism	2
+other	3
